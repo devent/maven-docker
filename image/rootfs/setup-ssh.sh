@@ -10,24 +10,28 @@ function setup_ssh() {
     chmod go-rw ${PROJECT_SSH_HOME}/id_rsa
 }
 
-#source /docker-entrypoint-utils.sh
-#set_debug
+source /docker-entrypoint-utils.sh
+set_debug
 echo "Running as `id`"
 
-needed_env=(
+required_env=(
 PROJECT_SSH_HOME
 PROJECT_SSH_HOST
 PROJECT_SSH_ID_RSA
 PROJECT_SSH_USER
+)
+
+optional_env=(
 PROJECT_SSH_PASS
 )
 
-for e in "${needed_env[@]}"; do
+for e in "${required_env[@]}"; do
     if [[ -z "${!e}" ]]; then
         echo "No ${e} set."
         exit 1
     fi
 done
 
+mkdir -p ${PROJECT_SSH_HOME}
 setup_known_host
 setup_ssh

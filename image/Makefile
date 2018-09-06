@@ -1,6 +1,6 @@
 REPOSITORY := erwin82
 NAME := maven
-VERSION ?= v3.5.3-jdk-8-r.6
+VERSION ?= v3.5.3-jdk-8-r.7
 
 .PHONY: build
 build: _build ##@targets Builds the docker image.
