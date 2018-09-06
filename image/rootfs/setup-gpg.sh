@@ -13,10 +13,10 @@ function setup_gpg() {
 }
 
 function sign_cache_gpg() {
-    echo "document" > doc
-    echo "${GPG_PASSPHRASE}" | base64 -d | gpg --no-tty --batch --passphrase-fd 0 --output doc.sig --sign doc
-    rm doc
-    rm doc.sig
+    tmp=`mktemp doc.XXXXX`
+    trap "rm -f ${tmp}; rm -f ${tmp}.sig || true;" EXIT
+    echo "document" > ${tmp}
+    echo "${GPG_PASSPHRASE}" | base64 -d | gpg --no-tty --batch --passphrase-fd 0 --output ${tmp}.sig --sign ${tmp}
 }
 
 source /docker-entrypoint-utils.sh
