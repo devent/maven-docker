@@ -2,7 +2,7 @@
 set -e
 
 function setup_gpg() {
-    mkdir ~/.gnupg
+    mkdir -p ~/.gnupg
     chmod 700 ~/.gnupg
     echo "use-agent" >> ~/.gnupg/gpg.conf
     echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
@@ -15,6 +15,8 @@ function setup_gpg() {
 function sign_cache_gpg() {
     echo "document" > doc
     echo "${GPG_PASSPHRASE}" | base64 -d | gpg --no-tty --batch --passphrase-fd 0 --output doc.sig --sign doc
+    rm doc
+    rm doc.sig
 }
 
 source /docker-entrypoint-utils.sh
@@ -23,10 +25,12 @@ echo "Running as `id`"
 
 if [[ -z "${GPG_PASSPHRASE}" ]]; then
     echo "No GPG_PASSPHRASE set."
+    exit 1
 fi
 
 if [[ -z "${GPG_KEY_FILE}" ]]; then
     echo "No GPG_KEY_FILE set."
+    exit 1
 fi
 
 setup_gpg
