@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+
+  archiva:
+    image: robobeerun/archiva:latest
+    environment:
+      DEBUG: "true"
+    volumes:
+      - "./root/html:/var/www/html"
+      - "./root/data:/data"
+
+  nginx:
+    image: robobeerun/nginx:latest
+    ports:
+      - 8080:8080
+    links:
+      - archiva
+    volumes:
+      - "./nginx-in:/nginx-in"
+      - "./root/html:/var/www/html"

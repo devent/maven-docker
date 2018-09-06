@@ -1,0 +1,5 @@
+log.txt
+test/root/**
+test/tmp/**
+image/apache-archiva-2.2.3
+image/mysql-connector-java-8.0.11
