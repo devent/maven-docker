@@ -2,7 +2,7 @@
 set -e
 
 function setup_known_host() {
-    ssh-keyscan ${PROJECT_SSH_HOST} >> ${PROJECT_SSH_HOME}/known_hosts
+    echo "${PROJECT_SSH_HOST}" >> ${PROJECT_SSH_HOME}/known_hosts
 }
 
 function setup_ssh() {
