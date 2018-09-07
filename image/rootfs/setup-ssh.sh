@@ -10,6 +10,11 @@ function setup_ssh() {
     chmod go-rw ${PROJECT_SSH_HOME}/id_rsa
 }
 
+function setup_git() {
+    git config --global user.email "${PROJECT_GIT_EMAIL}"
+    git config --global user.name "${PROJECT_GIT_NAME}"
+}
+
 source /docker-entrypoint-utils.sh
 set_debug
 echo "Running as `id`"
@@ -19,6 +24,8 @@ PROJECT_SSH_HOME
 PROJECT_SSH_HOST
 PROJECT_SSH_ID_RSA
 PROJECT_SSH_USER
+PROJECT_GIT_NAME
+PROJECT_GIT_EMAIL
 )
 
 optional_env=(
@@ -35,3 +42,4 @@ done
 mkdir -p ${PROJECT_SSH_HOME}
 setup_known_host
 setup_ssh
+setup_git
