@@ -39,6 +39,7 @@ for e in "${required_env[@]}"; do
     fi
 done
 
+/setup.sh
 mkdir -p ${PROJECT_SSH_HOME}
 setup_known_host
 setup_ssh

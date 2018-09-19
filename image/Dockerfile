@@ -19,5 +19,13 @@ RUN set -x \
 
 ADD rootfs/ /
 
+ADD docker-run-utils/docker-entrypoint-utils.sh /
+
 RUN set -x \
   && chmod +x /*.sh
+
+ENV DEBUG="false" \
+  PROJECT_JENKINS_WORKSPACE="/home/jenkins/workspace" \
+  PROJECT_JENKINS_USER="10000"
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

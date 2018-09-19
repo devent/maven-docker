@@ -33,5 +33,6 @@ if [[ -z "${GPG_KEY_FILE}" ]]; then
     exit 1
 fi
 
+/setup.sh
 setup_gpg
 sign_cache_gpg
