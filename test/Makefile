@@ -1,10 +1,8 @@
 include ../utils/Makefile.help
 include ../utils/Makefile.functions
 
-export NAME := archiva
-export ROOT_DIR := $(shell realpath ./root)
-export NGINX_CONF_DIR := $(shell realpath ./nginx-in)
-YAML ?= test.yaml
+export NAME := maven
+YAML := test.yaml
 
 .PHONY: test
 test: setup ##@targets Starts docker compose.
@@ -24,23 +22,7 @@ clean: rm ##@targets Removes docker containers and created files.
 
 .PHONY: setup
 setup:
-	for p in html db data; do \
+	for p in workspace; do \
 	mkdir -p root/$$p; \
-	chmod o+rwX root/$$p ; \
+	sudo chmod o+rwX root/$$p ; \
 	done
-
-.PHONY: test-mysql
-test-mysql:
-	$(MAKE) YAML=test-mysql.yaml test
-
-.PHONY: stop-mysql
-stop-mysql:
-	$(MAKE) YAML=test-mysql.yaml stop
-
-.PHONY: rm-mysql
-rm-mysql:
-	$(MAKE) YAML=test-mysql.yaml rm
-
-.PHONY: clean-mysql
-clean-mysql:
-	$(MAKE) YAML=test-mysql.yaml clean

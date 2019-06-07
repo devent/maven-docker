@@ -3,19 +3,25 @@ version: '3.1'
 services:
 
   archiva:
-    image: robobeerun/archiva:latest
+    image: erwin82/maven:latest
+    command:
+      - /bin/sh
+      - -c
+      - sleep 1h
     environment:
       DEBUG: "true"
+      JENKINS_URL: "http://jenkins:8080"
+      PROJECT_SSH_HOST: "anrisoftware.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiaHO9JCCCsjIaE0FpkMaEUrQPan2sevgdNsD6DhJ8dBDDssxZ0tD4A5FnutUpZOaFqLK8ly/EtTSqdfCX5D47xNV4PQ+KrCzYPWCumSc98ZQEKlp8LPS1qcD4dsN6yNnCZvfyzLmg02Ih0PNLBsvOcYMM4TLxpVxFXfMNSv71P4cujYlL3/AqUpx6j6CEnf2jyScUweVf8JxNv8byXisSpe7XAp0RcacZBqOkyKXWl7cfnvdjrg8mCYX9wfuTohe/EnHux9+02jV/0isHxwwYNHq1rBLWuaq9L66vMf3ahBtN9Yxv59OrV5m7u58zc2zB/6gDOekZRiezYLzq1AMx"
+      PROJECT_SSH_HOME: "/root/.ssh"
+      PROJECT_SSH_ID_RSA: |
+        -----BEGIN RSA PRIVATE KEY-----
+        -----END RSA PRIVATE KEY-----
+      PROJECT_SSH_USER: "jenkins"
+      PROJECT_SSH_PASS: ""
+      PROJECT_GIT_NAME: "jenkins"
+      PROJECT_GIT_EMAIL: "jenkins@anrisoftware.com"
+      GPG_PASSPHRASE: "xxx"
+      GPG_KEY_FILE: "/tmp/gpg-key.txt"
     volumes:
-      - "./root/html:/var/www/html"
-      - "./root/data:/data"
-
-  nginx:
-    image: robobeerun/nginx:latest
-    ports:
-      - 8080:8080
-    links:
-      - archiva
-    volumes:
-      - "./nginx-in:/nginx-in"
-      - "./root/html:/var/www/html"
+      - "./root/workspace:/home/jenkins/workspace"
+      - "./gpg-key.txt:/tmp/gpg-key.txt"

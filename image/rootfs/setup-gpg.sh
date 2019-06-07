@@ -2,14 +2,23 @@
 set -e
 
 function setup_gpg() {
+    tmp=`mktemp out.XXXXX`
+    trap "rm -f ${tmp}; rm -f ${tmp}.sig || true;" EXIT
     mkdir -p ~/.gnupg
     chmod 700 ~/.gnupg
     echo "use-agent" >> ~/.gnupg/gpg.conf
-    echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-    echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
     echo "allow-preset-passphrase" >> ~/.gnupg/gpg-agent.conf
-    echo RELOADAGENT | gpg-connect-agent
-    echo "${GPG_PASSPHRASE}" | base64 -d | gpg --passphrase-fd 0 --allow-secret-key-import --import ${GPG_KEY_FILE}
+    set +e
+    echo "${GPG_PASSPHRASE}" | base64 -d | gpg --passphrase-fd 0 --allow-secret-key-import --import ${GPG_KEY_FILE} > ${tmp} 2>&1
+    set -e
+    ret=$?
+    cat $tmp
+    if [[ $ret -ne 0 ]]; then
+        if grep 'already in secret keyring' ${tmp}; then
+            ret=0
+        fi
+    fi
+    return $ret
 }
 
 function sign_cache_gpg() {

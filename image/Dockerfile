@@ -2,7 +2,7 @@ FROM maven:3.6.1-jdk-12
 LABEL maintainer "Erwin Mueller <erwin.mueller@deventm.com>"
 
 RUN set -x \
-  && yum install -y gpg \
+  && yum install -y gpg git which \
   && rm -rf /var/cache/yum
 
 ADD rootfs/ /
