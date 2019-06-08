@@ -8,6 +8,7 @@ function setup_gpg() {
     chmod 700 ~/.gnupg
     echo "use-agent" >> ~/.gnupg/gpg.conf
     echo "allow-preset-passphrase" >> ~/.gnupg/gpg-agent.conf
+    eval $(gpg-agent --daemon)
     set +e
     echo "${GPG_PASSPHRASE}" | base64 -d | gpg --passphrase-fd 0 --allow-secret-key-import --import ${GPG_KEY_FILE} > ${tmp} 2>&1
     set -e
@@ -21,27 +22,35 @@ function setup_gpg() {
     return $ret
 }
 
-function sign_cache_gpg() {
+function preset_passphrase() {
+    echo "${GPG_PASSPHRASE}" | base64 -d | /usr/libexec/gpg-preset-passphrase -c ${GPG_KEY_ID}
+}
+
+function test_sign_gpg() {
     tmp=`mktemp doc.XXXXX`
     trap "rm -f ${tmp}; rm -f ${tmp}.sig || true;" EXIT
     echo "document" > ${tmp}
-    echo "${GPG_PASSPHRASE}" | base64 -d | gpg --no-tty --batch --passphrase-fd 0 --output ${tmp}.sig --sign ${tmp}
+    gpg --use-agent --no-tty --output ${tmp}.sig --sign ${tmp}
 }
 
 source /docker-entrypoint-utils.sh
 set_debug
 echo "Running as `id`"
 
-if [[ -z "${GPG_PASSPHRASE}" ]]; then
-    echo "No GPG_PASSPHRASE set."
-    exit 1
-fi
+required_env=(
+GPG_PASSPHRASE
+GPG_KEY_FILE
+GPG_KEY_ID
+)
 
-if [[ -z "${GPG_KEY_FILE}" ]]; then
-    echo "No GPG_KEY_FILE set."
-    exit 1
-fi
+for e in "${required_env[@]}"; do
+    if [[ -z "${!e}" ]]; then
+        echo "No ${e} set."
+        exit 1
+    fi
+done
 
 /setup.sh
 setup_gpg
-sign_cache_gpg
+preset_passphrase
+test_sign_gpg

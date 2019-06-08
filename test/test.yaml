@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  archiva:
+  maven:
     image: erwin82/maven:latest
     command:
       - /bin/sh
@@ -22,6 +22,7 @@ services:
       PROJECT_GIT_EMAIL: "jenkins@anrisoftware.com"
       GPG_PASSPHRASE: "xxx"
       GPG_KEY_FILE: "/tmp/gpg-key.txt"
+      GPG_KEY_ID: "00FFAA"
     volumes:
       - "./root/workspace:/home/jenkins/workspace"
       - "./gpg-key.txt:/tmp/gpg-key.txt"
