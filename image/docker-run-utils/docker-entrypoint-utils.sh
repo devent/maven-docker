@@ -100,6 +100,7 @@ function set_debug() {
     set -x
     BASH_CMD="bash -x"
     RSYNC_CMD="rsync -v"
+    echo "Running as `id`"
   fi
 }
 

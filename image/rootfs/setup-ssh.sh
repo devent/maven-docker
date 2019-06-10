@@ -17,7 +17,6 @@ function setup_git() {
 
 source /docker-entrypoint-utils.sh
 set_debug
-echo "Running as `id`"
 
 required_env=(
 PROJECT_SSH_HOME

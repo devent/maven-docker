@@ -35,7 +35,6 @@ function test_sign_gpg() {
 
 source /docker-entrypoint-utils.sh
 set_debug
-echo "Running as `id`"
 
 required_env=(
 GPG_PASSPHRASE
