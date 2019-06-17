@@ -2,7 +2,7 @@
 set -e
 
 function setup_gpg() {
-    tmp=`mktemp out.XXXXX`
+    tmp=`mktemp -t out.XXXXX`
     trap "rm -f ${tmp}; rm -f ${tmp}.sig || true;" EXIT
     mkdir -p ~/.gnupg
     chmod 700 ~/.gnupg
@@ -27,7 +27,7 @@ function preset_passphrase() {
 }
 
 function test_sign_gpg() {
-    tmp=`mktemp doc.XXXXX`
+    tmp=`mktemp -t doc.XXXXX`
     trap "rm -f ${tmp}; rm -f ${tmp}.sig || true;" EXIT
     echo "document" > ${tmp}
     gpg --use-agent --no-tty --output ${tmp}.sig --sign ${tmp}
@@ -49,7 +49,6 @@ for e in "${required_env[@]}"; do
     fi
 done
 
-/setup.sh
 setup_gpg
 preset_passphrase
 test_sign_gpg

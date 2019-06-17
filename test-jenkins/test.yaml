@@ -8,11 +8,13 @@ services:
       - /bin/sh
       - -c
       - sleep 1h
+    user: "10000"
     environment:
       DEBUG: "true"
+      HOME: "/home/jenkins"
       JENKINS_URL: "http://jenkins:8080"
-      PROJECT_SSH_HOST: "xx"
-      PROJECT_SSH_HOME: "/root/.ssh"
+      PROJECT_SSH_HOST: "anrisoftware.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiaHO9JCCCsjIaE0FpkMaEUrQPan2sevgdNsD6DhJ8dBDDssxZ0tD4A5FnutUpZOaFqLK8ly/EtTSqdfCX5D47xNV4PQ+KrCzYPWCumSc98ZQEKlp8LPS1qcD4dsN6yNnCZvfyzLmg02Ih0PNLBsvOcYMM4TLxpVxFXfMNSv71P4cujYlL3/AqUpx6j6CEnf2jyScUweVf8JxNv8byXisSpe7XAp0RcacZBqOkyKXWl7cfnvdjrg8mCYX9wfuTohe/EnHux9+02jV/0isHxwwYNHq1rBLWuaq9L66vMf3ahBtN9Yxv59OrV5m7u58zc2zB/6gDOekZRiezYLzq1AMx"
+      PROJECT_SSH_HOME: "/home/jenkins/.ssh"
       PROJECT_SSH_ID_RSA: |
         -----BEGIN RSA PRIVATE KEY-----
         -----END RSA PRIVATE KEY-----
